@@ -496,3 +496,52 @@ This is used to set condition for pipeline success depending on code quality
 
 ## Configuring Webhook to Build at Push
 
+1. Configure repository settings
+
+- Under the Jenkins-Project repository, click settings
+	- Click webhooks > Add webhook
+		+ Payload url = http://jenkins-ip:8080/github-webhook/
+		+ Content type = application/json
+		+ For events to trigger, either 'just the push event' or you can 'select individual events'
+		+ Check active and then add.
+	- There should be a green check to confirm. If not check security group of jenkins server to ensure it's accessible publicly.
+
+![hook success]()
+
+2. On the Jenkins console, go to 'Manage jenkins' > 'security'
+	- Scroll down and find 'Git Host Key verification Configuration'
+	- Under the dropdown for host key verification strategy, select 'Accept first connection'
+	- Save
+
+3. Create a new pipeline project item on jenkins
+	- Under definition, select Pipeline script from SCM
+	- Under SCM, select git
+	- Paste the https url (ssh url if it is private) of the git repository
+		
+        **Follow these steps for private repository**
+        [+ Under credentials, click Add (jenkins)
+			- Change the kind to ssh username with private key
+			- Username is username of github profile
+				- On the system shell, do `ls ~/.ssh/` to see private key file. Then use `cat` to view `cat ~/.ssh/id_ed25519`
+				- Copy the private key
+			- Under private key, check 'enter directly'
+			- Click add and then paste the key.
+			- Enter ID and description
+			- Then Add.
+		+ Now select the defined credential from the dropdown]
+
+	- Save
+
+	- Specify branch to build
+
+	- Now save.
+
+4. Configure project on jenkins
+
+- Go to the webhook project > configure
+	- Under 'Build Rriggers', check 'Github hook trigger for GITScm polling'
+	- Save
+
+![git hook trig]()
+
+5. Now, add and push any new changes to the repository to confirm trigger on jenkins
