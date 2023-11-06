@@ -222,7 +222,7 @@ This is used to set condition for pipeline success depending on code quality
 
 ![gate-add]()
 
-	- Go to project settings dropdown again and select "Webhooks"
+3. Go to project settings dropdown again and select "Webhooks"
 	- Click "Create"
 		+ Name: eg JenkinsWebhook
 		+ URL: http://private-ip-of-the-jenkins-server:8080/sonarqube-webhook
@@ -230,15 +230,15 @@ This is used to set condition for pipeline success depending on code quality
 
 ![webh]()
 
-2. On the Jenkinsfile, add stage for quality gate
+4. On the Jenkinsfile, add stage for quality gate
 
-3. Run the pipeline (it would fail if quality gate conditions are not met)
+5. Run the pipeline (it would fail if quality gate conditions are not met)
 
 ![qg fail]()
 
 ![qg fail console]()
 
-4. Adjust the quality gate above 82 to see if it will succeed
+6. Adjust the quality gate above 82 to see if it will succeed
 
 ![qg adjust]()
 
@@ -377,6 +377,8 @@ This is used to set condition for pipeline success depending on code quality
 		- Paste access and secret key from the IAM user role created
 		- Create
 
+![aws creds]()
+
 6. Configure Amazon Elastic Container Registry
 
 - Open the ECR page
@@ -384,6 +386,113 @@ This is used to set condition for pipeline success depending on code quality
 		+ Check 'private'
 		+ Give it a name and then create repository
 
+![aws repo]()
+
 7. Update the Jenkinsfile
 
-9. Create a new pipeline project on jenkins, paste the jenkinsfile, save and build. //May need to restart jenkins service and docker engine before build//
+9. Create a new pipeline project on jenkins, paste the jenkinsfile, save and build. # May need to restart jenkins service and docker engine before build
+
+![ecr success]()
+
+- Go to ECR page to see the image
+
+![ecr image success]()
+
+![ecr scan]()
+
+- `docker images` on the server will also show the images
+
+![ecr docker images]()
+
+- Check notification on slack
+
+![ecr slack]()
+
+## Deploy Image with ECS
+
+1. Create Amazon Elastic Container Service (ECS) Cluster
+
+- Go to ECS page (Ensure 'New ECS Experience' is toggled on)
+	- Go to Clusters and Create cluster
+		- Give the cluster a name
+		- Under networking, you can leave the defaults (it's advised in production to use non-defaults)
+		- For Infrastructure, check AWS fargate (serverless)
+		- Under monitoring, toggle on 'use container insights'
+		- Add tags and create.
+
+![cluster name]()
+
+2. Go to Task definitions and create new task definition
+	- Give it a family name
+	- Launch type is fargate
+	- Leave vcpu and memory as default (1vcpu 2gb memory)
+	- For task execution role, select create new role
+	- Container - 1 container details
+		+ Give it a name
+		+ Image URI is the ECR uri (Amazon ECR > Repositories)
+		+ Container port is 8080
+	- Create
+
+![task definition]()
+
+3. After creation, click on the ecsTaskExecutionRole link
+	- Make sure the following roles are added (Add permissions > Attach policies)
+		+ CloudWatchLogsFullAccess (CloudwatchFullAccess)
+		+ AmazonECSTaskExecutionRolePolicy
+
+![task execution]()
+
+4. Under Clusters, go to Services and click create
+	- Check capacity provider strategy
+	- Check use custom (Advanced)
+	- Leave defaults (capacity provider=fargate, base=0, weight=1, platform version=latest)
+	- For deployment configuration:
+		+ Application type = service
+		+ Select family. Revision=1(latest)
+		+ Give service name
+		+ Service type = Replica
+		+ Desired tasks = 2 (or just 1)
+	- Deployment failure detection
+		+ Uncheck 'use the amazon ECS deployment circuit breaker
+	- Under networking
+		+ Specify vpc and subnets
+		+ Create new security group
+			- Specify name and description
+			- Open up port 8080 (Since we have tomcat running in the container)
+			- Open port 80 (this is the port the load balancer will be using for outside connection)
+	- For load balancing
+		+ Type is application load balancer
+		+ Create a new load balancer
+		+ Give the load balancer a name
+		+ Choose container to load balance
+		+ For listener, create new listener and specify port 80
+		+ For target group, create new target group
+			- Specify a target group name
+			- Health check path = /login
+	- Create
+	- The instances will appear under target groups but won't show up under instances since they're serverless
+
+![cluster service]()
+
+5. Under Clusters > cluster-name > services > service-name, go to Networking and copy the DNS name (which can also be found under load balancers) and open in browser
+
+![devopsacad]()
+
+6. Update the Jenkinsfile to update ECR and deploy latest build to ECS
+
+7. Create an ECS pipeline project and build.
+
+![ecs success]()
+
+- In the clusters page and target groups, you can see the clusters draining and updating.
+
+![draining1]()
+
+![draining2]()
+
+8. Confirm the application is still running on the browser and slack notification.
+
+![ecs slack]()
+
+## Configuring Webhook to Build at Push
+

@@ -8,6 +8,8 @@ pipeline {
         awsEcrCreds = 'ecr:us-east-2:AWSCreds' //Use your own zone and credentials ID
         awsEcrRegistry =  "052101902987.dkr.ecr.us-east-2.amazonaws.com/jenkins-docker-image" //Enter your registry URI
         devopsacadEcrImgReg = "https://052101902987.dkr.ecr.us-east-2.amazonaws.com" //Endpoint of the URI
+        cluster = "JenkinsCluster" //Update for ECS
+        service = "jenkins-cluster-service" //Update for ECS
         awsRegion = "us-east-2"
     }
     tools {
@@ -106,6 +108,13 @@ pipeline {
                         dockerImage.push ("$BUILD_NUMBER")
                         dockerImage.push ('latest')
                     }
+                }
+            }
+        }
+        stage ('Deploy Image to ECS') {
+            steps {
+                withAWS(credentials: 'AWSCreds', region: "${awsRegion}") {
+                    sh 'aws ecs update-service --cluster ${cluster} --service ${service} --force-new-deployment'
                 }
             }
         }
