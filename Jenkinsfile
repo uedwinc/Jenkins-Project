@@ -117,6 +117,11 @@ pipeline {
                     sh 'aws ecs update-service --cluster ${cluster} --service ${service} --force-new-deployment'
                 }
             }
+            post {
+                success {
+                    echo 'App Deployed and Running'
+                }
+            }
         }
     }
     post {
