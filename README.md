@@ -10,10 +10,13 @@ This project will incorporate:
 - Deploying the image with ECS
 - Configuring a Jenkins-Github webhook to build at push
 
+---
+
 ## Tools and Technologies
 
 ![docker](https://img.shields.io/badge/docker-2496ED?style=for-the-badge&labelColor=black&logo=docker&logoColor=2496ED) ![jenkins](https://img.shields.io/badge/jenkins-D24939?style=for-the-badge&labelColor=black&logo=jenkins&logoColor=D24939) ![amazon ec2](https://img.shields.io/badge/amazonec2-FF9900?style=for-the-badge&labelColor=black&logo=amazonec2&logoColor=FF9900) ![Maven](https://img.shields.io/badge/apachemaven-3-C71A36?style=for-the-badge&logo=apachemaven) ![Sonatype](https://img.shields.io/badge/sonatype-3-1B1C30?style=for-the-badge&logo=sonatype)
 
+---
 
 ## Installations
 
@@ -21,7 +24,7 @@ This project will incorporate:
 
 1. Launch a Jenkins Server EC2 instance on AWS (I used Ubuntu AMI on t2.small).
 
-2. During launch, provision [user data]()
+2. During launch, provision [user data](https://github.com/uedwinc/Jenkins-Project/blob/main/userdata/jenkins-setup.sh)
 
 - This includes:
     - A bash installation of jenkins as seen in the documentation (https://www.jenkins.io/doc/book/installing/linux/#debianubuntu)
@@ -40,23 +43,23 @@ This project will incorporate:
 
 6. Confirm jenkins installation using `systemctl status jenkins`. The output of this also gives you password to jenkins.
 
-![jenkins running]()
+![jenkins running](https://github.com/uedwinc/Jenkins-Project/blob/main/images/jenkins%20running.png)
 
 7. Now, open jenkins console on the browser with ip address and port and enter the password.
 
 8. Customize jenkins with suggested plugins and user information. Then launch the jenkins console.
 
-![jenkins console]()
+![jenkins console](https://github.com/uedwinc/Jenkins-Project/blob/main/images/jenkins%20console.png)
 
 9. Go to 'Tools' under 'Manage Jenkins' and setup JDK, git and maven.
 
-    - Path for java installation is /usr/lib/jvm/
+- Path for java installation is /usr/lib/jvm/
 
-![jdk]()
+![jdk](https://github.com/uedwinc/Jenkins-Project/blob/main/images/jdk.png)
 
-![git]()
+![git](https://github.com/uedwinc/Jenkins-Project/blob/main/images/git.png)
 
-![maven]()
+![maven](https://github.com/uedwinc/Jenkins-Project/blob/main/images/maven.png)
 
 10. Installing Plugins
 
@@ -73,13 +76,13 @@ This project will incorporate:
 1. Launch a Nexus Server instance on AWS (I used CentOS 7 from AWS Marketplace)
     - Although Nexus requires 4vcpu and 4gb ram, I will stick to t3.meduim to minimize cost.
 
-2. Provision [user data]() to install nexus, install JDK, set up environment variables and start nexus service
+2. Provision [user data](https://github.com/uedwinc/Jenkins-Project/blob/main/userdata/nexus-setup.sh) to install nexus, install JDK, set up environment variables and start nexus service
 
 3. SSH into the Nexus Server (username=centos)
 
 4. Confirm that Nexus is running `systemctl status nexus`
 
-![nexus running]()
+![nexus running](https://github.com/uedwinc/Jenkins-Project/blob/main/images/nexus%20running.png)
 
 5. Nexus runs on port 8081, so open this in the security group on AWS
 
@@ -87,9 +90,9 @@ This project will incorporate:
 
 7. Sign-in with username "admin" and password as specified in the path on the sign-in screen
 
-![nexus sign in]()
+![nexus sign in](https://github.com/uedwinc/Jenkins-Project/blob/main/images/nexus%20sign%20in.png)
 
-![nexus console]()
+![nexus console](https://github.com/uedwinc/Jenkins-Project/blob/main/images/nexus%20console.png)
 
 ### Starting and Configuring Sonarqube Server
 
@@ -97,11 +100,11 @@ Sonarqube helps in code quality analysis
 
 1. Launch a Sonarqube Server instance on AWS (I used Ubuntu AMI and t3.medium)
 
-2. Provision [user data]()
+2. Provision [user data](https://github.com/uedwinc/Jenkins-Project/blob/main/userdata/sonar-setup.sh)
 
 3. SSH into the server and confirm installation using `systemctl status sonarqube`
 
-![sonarqube running]()
+![sonarqube running](https://github.com/uedwinc/Jenkins-Project/blob/main/images/sonarqube%20running.png)
 
 4. Sonarqube runs on port 80, so open that in the security group
 
@@ -109,7 +112,7 @@ Sonarqube helps in code quality analysis
 
 6. Log in (username=admin, password=admin)
 
-![sonar sign in]()
+![sonar sign in](https://github.com/uedwinc/Jenkins-Project/blob/main/images/sonar%20sign%20in.png)
 
 ---
 
@@ -128,17 +131,19 @@ Sonarqube helps in code quality analysis
 
 5. Save and Build
 
-![mvn build]()
+![mvn build](https://github.com/uedwinc/Jenkins-Project/blob/main/images/mvn%20build.png)
 
 6. On the jenkins server, switch to jenkins user (created by default when jenkins was installed) `su jenkins`
+   
 	- Go to `/var/lib/jenkins/workspace/` to see all archived builds.
+
 	- Go to `/targets` of any build to see the artifact that was generated.
 
-        ![terminal artifact]()
+        ![terminal artifact](https://github.com/uedwinc/Jenkins-Project/blob/main/images/terminal%20artifact.png)
 
 	- This can also be found on the jenkins console workspace.
 
-        ![console artifact]()
+        ![console artifact](https://github.com/uedwinc/Jenkins-Project/blob/main/images/console%20artifact.png)
 
 ---
 
@@ -151,7 +156,7 @@ Sonarqube helps in code quality analysis
 	    - Select the appropriate version. //Latest version may not work so it is better to stick to more stable version//
 	    - Save.
 
-![sonar4.7]()
+![sonar4.7](https://github.com/uedwinc/Jenkins-Project/blob/main/images/sonar4.7.png)
 
 2. Again, go to "System" under "Manage Jenkins" and configure
 	
@@ -170,7 +175,7 @@ Sonarqube helps in code quality analysis
 				- Enter any name eg 'jenkins' and generate token
 				- Copy the generated token
 
-            ![token]()
+            ![token](https://github.com/uedwinc/Jenkins-Project/blob/main/images/token.png)
 			
             + On the jenkins console, click on "add", select jenkins.
 			
@@ -183,7 +188,7 @@ Sonarqube helps in code quality analysis
 			+ Now, for the server authentication token, select the "JenkinsSonarIntegration"
 	- Save.
 
-![sonar servers]()
+![sonar servers](https://github.com/uedwinc/Jenkins-Project/blob/main/images/sonar%20servers.png)
 
 3. Integrate checkstyle analysis in the Jenkinsfile 
 	- Documentation: https://maven.apache.org/plugins/maven-checkstyle-plugin/usage.html
@@ -201,11 +206,11 @@ Sonarqube helps in code quality analysis
 
 6. Run a new pipeline
 
-![sonar p]()
+![sonar p](https://github.com/uedwinc/Jenkins-Project/blob/main/images/sonar%20p.png)
 
 7. On the sonarqube web console, you can see the results of the code analysis.
 
-![sonar c]()
+![sonar c](https://github.com/uedwinc/Jenkins-Project/blob/main/images/sonar%20c.png)
 
 ## Setting up Quality Gate
 
@@ -218,14 +223,14 @@ This is used to set condition for pipeline success depending on code quality
 		- Quality gate fails when: select eg Bugs
 		- Specify operator and value, eg 50 or lower
 
-![gate50]()
+![gate50](https://github.com/uedwinc/Jenkins-Project/blob/main/images/gate50.png)
 
 2. On the sonarqube web console, on the top menu, click "Projects"
 	- Click on the project, that is the MavenBuildScan
 	- On the top right, click on "Project Settings" dropdown and select "Quality Gate"
 	- Choose the quality gate that was defined
 
-![gate-add]()
+![gate-add](https://github.com/uedwinc/Jenkins-Project/blob/main/images/gate-add.png)
 
 3. Go to project settings dropdown again and select "Webhooks"
 	- Click "Create"
@@ -233,23 +238,23 @@ This is used to set condition for pipeline success depending on code quality
 		+ URL: http://private-ip-of-the-jenkins-server:8080/sonarqube-webhook
 		+ No secret so Create
 
-![webh]()
+![webh](https://github.com/uedwinc/Jenkins-Project/blob/main/images/webh.png)
 
 4. On the Jenkinsfile, add stage for quality gate
 
 5. Run the pipeline (it would fail if quality gate conditions are not met)
 
-![qg fail]()
+![qg fail](https://github.com/uedwinc/Jenkins-Project/blob/main/images/qg%20fail.png)
 
-![qg fail console]()
+![qg fail console](https://github.com/uedwinc/Jenkins-Project/blob/main/images/qg%20fail%20console.png)
 
 6. Adjust the quality gate above 82 to see if it will succeed
 
-![qg adjust]()
+![qg adjust](https://github.com/uedwinc/Jenkins-Project/blob/main/images/qg%20adjust.png)
 
 - Pipeline Succeeded
 
-![qg succeed]()
+![qg succeed](https://github.com/uedwinc/Jenkins-Project/blob/main/images/qg%20succeed.png)
 
 ## Integrating Nexus Artifact Push
 
@@ -258,7 +263,7 @@ This is used to set condition for pipeline success depending on code quality
 	- Under Global properties, set-up BUILD_TIMESTAMP
 	- Save
 
-![btstamp]()
+![btstamp](https://github.com/uedwinc/Jenkins-Project/blob/main/images/btstamp.png)
 
 2. Create repository on Nexus console
 	- Go to repositories and create a maven2(hosted) repository
@@ -269,7 +274,7 @@ This is used to set condition for pipeline success depending on code quality
 	- Go to user and create a new user
 		- Attach the role created to it
 
-        ![nx user]()
+        ![nx user](https://github.com/uedwinc/Jenkins-Project/blob/main/images/nx%20user.png)
 
 3. Configure credentials id
 - This is a way to pass in nexus credentials into the pipeline.
@@ -283,17 +288,17 @@ This is used to set condition for pipeline success depending on code quality
 		+ Specify an ID and description (note the ID specified)
 		+ Create
 
-![j m cred]()
+![j m cred](https://github.com/uedwinc/Jenkins-Project/blob/main/images/j%20m%20cred.png)
 
 4. Adjust quality gate so the pipeline doesn't fail
 
 5. Create new project on jenkins, paste pipeline code and build.
 
-![nex pipe]()
+![nex pipe](https://github.com/uedwinc/Jenkins-Project/blob/main/images/nex%20pipe.png)
 
 - See artifact on Nexus
 
-![nx art console]()
+![nx art console](https://github.com/uedwinc/Jenkins-Project/blob/main/images/nx%20art%20console.png)
 
 ## Configure Slack notification
 
@@ -303,13 +308,13 @@ This is used to set condition for pipeline success depending on code quality
 	- Search 'jenkins' in the search bar
 	- Choose 'Jenkins CI'
 
-![slack dev]()
+![slack dev](https://github.com/uedwinc/Jenkins-Project/blob/main/images/slack%20dev.png)
 
-	- Click on 'Add to slack'
-	- Choose a channel in the workspace to post notifications to
-	- Click on 'Add jenkins CI integration'
-	- Scroll down and copy the token
-	- Save
+- Click on 'Add to slack'
+- Choose a channel in the workspace to post notifications to
+- Click on 'Add jenkins CI integration'
+- Scroll down and copy the token
+- Save
 
 3. Go to jenkins console > manage jenkins > system
 	- Scroll down to "Slack" section
@@ -319,20 +324,20 @@ This is used to set condition for pipeline success depending on code quality
 		+ Enter any appropriate ID and description (copy the ID)
 		+ Add
 
-        ![jk creds]()
+        ![jk creds](https://github.com/uedwinc/Jenkins-Project/blob/main/images/jk%20creds.png)
 
 	- Choose the newly created credential under credentials
 	- Save
 
-    ![slack]
+    ![slack](https://github.com/uedwinc/Jenkins-Project/blob/main/images/slack.png)
 
 4. Edit the jenkinsfile and add a post-build action for slack notification
 
 5. Create a new item project on jenkins and run the pipeline on it.
 
-![slack success]()
+![slack success](https://github.com/uedwinc/Jenkins-Project/blob/main/images/slack%20success.png)
 
-![slack actual]()
+![slack actual](https://github.com/uedwinc/Jenkins-Project/blob/main/images/slack%20actual.png)
 
 ## Build Docker Image and Push to ECR
 
@@ -355,7 +360,7 @@ This is used to set condition for pipeline success depending on code quality
 	- Click users > Add users
 	- Give it a name eg jenkins and click next (don't check console management access)
 
-    ![aws jk user]()
+    ![aws jk user](https://github.com/uedwinc/Jenkins-Project/blob/main/images/aws%20jk%20user.png)
 
 	- Attach policies directly and attach the following policies
 		+ AmazonEC2ContainerRegistryFullAccess
@@ -382,7 +387,7 @@ This is used to set condition for pipeline success depending on code quality
 		- Paste access and secret key from the IAM user role created
 		- Create
 
-![aws creds]()
+![aws creds](https://github.com/uedwinc/Jenkins-Project/blob/main/images/aws%20creds.png)
 
 6. Configure Amazon Elastic Container Registry
 
@@ -391,27 +396,29 @@ This is used to set condition for pipeline success depending on code quality
 		+ Check 'private'
 		+ Give it a name and then create repository
 
-![aws repo]()
+![aws repo](https://github.com/uedwinc/Jenkins-Project/blob/main/images/aws%20repo.png)
 
 7. Update the Jenkinsfile
 
 9. Create a new pipeline project on jenkins, paste the jenkinsfile, save and build. # May need to restart jenkins service and docker engine before build
 
-![ecr success]()
+![ecr success](https://github.com/uedwinc/Jenkins-Project/blob/main/images/ecr%20success.png)
 
 - Go to ECR page to see the image
 
-![ecr image success]()
+![ecr image success](https://github.com/uedwinc/Jenkins-Project/blob/main/images/ecr%20image%20success.png)
 
-![ecr scan]()
+- ECR scan result
+
+![ecr scan](https://github.com/uedwinc/Jenkins-Project/blob/main/images/ecr%20scan.png)
 
 - `docker images` on the server will also show the images
 
-![ecr docker images]()
+![ecr docker images](https://github.com/uedwinc/Jenkins-Project/blob/main/images/ecr%20docker%20images.png)
 
 - Check notification on slack
 
-![ecr slack]()
+![ecr slack](https://github.com/uedwinc/Jenkins-Project/blob/main/images/ecr%20slack.png)
 
 ## Deploy Image with ECS
 
@@ -425,7 +432,7 @@ This is used to set condition for pipeline success depending on code quality
 		- Under monitoring, toggle on 'use container insights'
 		- Add tags and create.
 
-![cluster name]()
+![cluster name](https://github.com/uedwinc/Jenkins-Project/blob/main/images/cluster%20name.png)
 
 2. Go to Task definitions and create new task definition
 	- Give it a family name
@@ -436,16 +443,16 @@ This is used to set condition for pipeline success depending on code quality
 		+ Give it a name
 		+ Image URI is the ECR uri (Amazon ECR > Repositories)
 		+ Container port is 8080
-	- Create
+	- Create (This takes some time to create)
 
-![task definition]()
+![task definition](https://github.com/uedwinc/Jenkins-Project/blob/main/images/task%20definition.png)
 
 3. After creation, click on the ecsTaskExecutionRole link
 	- Make sure the following roles are added (Add permissions > Attach policies)
 		+ CloudWatchLogsFullAccess (CloudwatchFullAccess)
 		+ AmazonECSTaskExecutionRolePolicy
 
-![task execution]()
+![task execution](https://github.com/uedwinc/Jenkins-Project/blob/main/images/task%20execution.png)
 
 4. Under Clusters, go to Services and click create
 	- Check capacity provider strategy
@@ -477,27 +484,27 @@ This is used to set condition for pipeline success depending on code quality
 	- Create
 	- The instances will appear under target groups but won't show up under instances since they're serverless
 
-![cluster service]()
+![cluster service](https://github.com/uedwinc/Jenkins-Project/blob/main/images/cluster%20service.png)
 
 5. Under Clusters > cluster-name > services > service-name, go to Networking and copy the DNS name (which can also be found under load balancers) and open in browser
 
-![devopsacad]()
+![devopsacad](https://github.com/uedwinc/Jenkins-Project/blob/main/images/devopsacad.png)
 
 6. Update the Jenkinsfile to update ECR and deploy latest build to ECS
 
 7. Create an ECS pipeline project and build.
 
-![ecs success]()
+![ecs success](https://github.com/uedwinc/Jenkins-Project/blob/main/images/ecs%20success.png)
 
 - In the clusters page and target groups, you can see the clusters draining and updating.
 
-![draining1]()
+![draining1](https://github.com/uedwinc/Jenkins-Project/blob/main/images/draining1.png)
 
-![draining2]()
+![draining2](https://github.com/uedwinc/Jenkins-Project/blob/main/images/draining2.png)
 
 8. Confirm the application is still running on the browser and slack notification.
 
-![ecs slack]()
+![ecs slack](https://github.com/uedwinc/Jenkins-Project/blob/main/images/ecs%20slack.png)
 
 ## Configuring Webhook to Build at Push
 
@@ -511,7 +518,7 @@ This is used to set condition for pipeline success depending on code quality
 		+ Check active and then add.
 	- There should be a green check to confirm. If not check security group of jenkins server to ensure it's accessible publicly.
 
-![hook success]()
+![hook success](https://github.com/uedwinc/Jenkins-Project/blob/main/images/hook%20success.png)
 
 2. On the Jenkins console, go to 'Manage jenkins' > 'security'
 	- Scroll down and find 'Git Host Key verification Configuration'
@@ -524,7 +531,7 @@ This is used to set condition for pipeline success depending on code quality
 	- Paste the https url (ssh url if it is private) of the git repository
 		
         **Follow these steps for private repository**
-        [+ Under credentials, click Add (jenkins)
+        //+ Under credentials, click Add (jenkins)
 			- Change the kind to ssh username with private key
 			- Username is username of github profile
 				- On the system shell, do `ls ~/.ssh/` to see private key file. Then use `cat` to view `cat ~/.ssh/id_ed25519`
@@ -533,7 +540,7 @@ This is used to set condition for pipeline success depending on code quality
 			- Click add and then paste the key.
 			- Enter ID and description
 			- Then Add.
-		+ Now select the defined credential from the dropdown]
+		+ Now select the defined credential from the dropdown//
 
 	- Save
 
@@ -547,6 +554,6 @@ This is used to set condition for pipeline success depending on code quality
 	- Under 'Build Rriggers', check 'Github hook trigger for GITScm polling'
 	- Save
 
-![git hook trig]()
+![git hook trig](https://github.com/uedwinc/Jenkins-Project/blob/main/images/git%20hook%20trig.png)
 
 5. Now, add and push any new changes to the repository to confirm trigger on jenkins
