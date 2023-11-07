@@ -10,6 +10,11 @@ This project will incorporate:
 - Deploying the image with ECS
 - Configuring a Jenkins-Github webhook to build at push
 
+## Tools and Technologies
+
+![docker](https://img.shields.io/badge/docker-2496ED?style=for-the-badge&labelColor=black&logo=docker&logoColor=2496ED) ![jenkins](https://img.shields.io/badge/jenkins-D24939?style=for-the-badge&labelColor=black&logo=jenkins&logoColor=D24939) ![amazon ec2](https://img.shields.io/badge/amazonec2-FF9900?style=for-the-badge&labelColor=black&logo=amazonec2&logoColor=FF9900) ![Maven](https://img.shields.io/badge/apachemaven-3-C71A36?style=for-the-badge&logo=apachemaven) ![Sonatype](https://img.shields.io/badge/sonatype-3-1B1C30?style=for-the-badge&logo=sonatype)
+
+
 ## Installations
 
 ### Starting and Configuring the Jenkins Server
