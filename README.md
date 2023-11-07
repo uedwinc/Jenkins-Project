@@ -558,8 +558,8 @@ This is used to set condition for pipeline success depending on code quality
 
 5. Now, add and push any new changes to the repository to confirm trigger on jenkins
 
-![triggered]()
+![triggered](https://github.com/uedwinc/Jenkins-Project/blob/main/images/triggered.png)
 
-![trig complete]()
+![trig complete](https://github.com/uedwinc/Jenkins-Project/blob/main/images/trig%20complete.png)
 
-![slack succ]()
+![slack succ](https://github.com/uedwinc/Jenkins-Project/blob/main/images/slack%20succ.png)
