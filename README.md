@@ -530,8 +530,9 @@ This is used to set condition for pipeline success depending on code quality
 	- Under SCM, select git
 	- Paste the https url (ssh url if it is private) of the git repository
 		
-        **Follow these steps for private repository**
-        //+ Under credentials, click Add (jenkins)
+        - **Follow these steps for private repository**
+   
+        	+ Under credentials, click Add (jenkins)
 			- Change the kind to ssh username with private key
 			- Username is username of github profile
 				- On the system shell, do `ls ~/.ssh/` to see private key file. Then use `cat` to view `cat ~/.ssh/id_ed25519`
@@ -540,7 +541,7 @@ This is used to set condition for pipeline success depending on code quality
 			- Click add and then paste the key.
 			- Enter ID and description
 			- Then Add.
-		+ Now select the defined credential from the dropdown//
+		+ Now select the defined credential from the dropdown
 
 	- Save
 
