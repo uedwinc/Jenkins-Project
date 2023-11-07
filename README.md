@@ -557,3 +557,9 @@ This is used to set condition for pipeline success depending on code quality
 ![git hook trig](https://github.com/uedwinc/Jenkins-Project/blob/main/images/git%20hook%20trig.png)
 
 5. Now, add and push any new changes to the repository to confirm trigger on jenkins
+
+![triggered]()
+
+![trig complete]()
+
+![slack succ]()
